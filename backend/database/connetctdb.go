@@ -40,11 +40,10 @@ func ConnectDB() {
 	}
 	log.Println("データベース接続に成功")
 
-	DB = db
-
 	if err := db.AutoMigrate(&models.User{}, &models.Item{}); err != nil {
 		log.Fatal("データベース接続に失敗")
 	}
 	log.Println("データマイグレーションに成功")
 
+	DB = db
 }

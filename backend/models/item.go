@@ -1,8 +1,15 @@
 package models
 
+import "gorm.io/gorm"
+
 type Item struct {
-	ID          uint   `json:"id"`
-	Name        string `json:"name"`
-	Description string `json:"descritpion"`
-	Stock       uint   `json:"stock"`
+	gorm.Model
+	Name     string `json:"name"`
+	StockNum uint   `json:"stocknum"`
+	Restock  bool   `json:"restock"`
+}
+
+type InputItem struct {
+	StockNum uint `json:"stocknum" binding:"required"`
+	Restock  bool `json:"restock" binding:"required"`
 }
