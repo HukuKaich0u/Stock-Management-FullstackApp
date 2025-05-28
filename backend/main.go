@@ -16,10 +16,9 @@ func main() {
 	allowOrigins := []string{"http://localhost:3000/user/register", "https://localhost:8080/user/register"}
 	router.Use(middleware.CorsMiddleware(allowOrigins))
 
-	{
-		userRoutes := router.Group("/user")
-		userRoutes.POST("/register", controllers.RegisterUser)
-	}
+	router.POST("/items", controllers.CreateItems)
+	router.GET("/items", controllers.GetAllItems)
+	router.DELETE("/items/:id", controllers.DeleteItems)
 
 	router.POST("")
 	router.Run(PORT)

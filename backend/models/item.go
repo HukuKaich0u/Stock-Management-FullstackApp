@@ -10,6 +10,7 @@ type Item struct {
 }
 
 type InputItem struct {
-	StockNum uint `json:"stocknum" binding:"required"`
-	Restock  bool `json:"restock" binding:"required"`
+	Name     string `json:"name"`
+	StockNum uint   `json:"stocknum" binding:"required"`
+	Restock  bool   `json:"restock"`
 }

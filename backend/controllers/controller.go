@@ -16,7 +16,11 @@ func CreateItems(c *gin.Context) {
 		return
 	}
 
-	item := models.Item{}
+	item := models.Item{
+		Name:     inputItem.Name,
+		StockNum: inputItem.StockNum,
+		Restock:  inputItem.Restock,
+	}
 	if err := database.DB.Create(&item).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -25,7 +29,7 @@ func CreateItems(c *gin.Context) {
 	c.JSON(http.StatusOK, item)
 }
 
-func GetItems(c *gin.Context) {
+func GetAllItems(c *gin.Context) {
 	var items []models.Item
 	if err := database.DB.Order("ID asc").Find(&items).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -80,5 +84,5 @@ func DeleteItems(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Deleted an item"})
+	c.JSON(http.StatusOK, gin.H{"message": "An Item Deleted"})
 }
