@@ -40,61 +40,61 @@ const data: Payment[] = [
   {
     id: "m5gr84i9",
     amount: 316,
-    status: "success",
+    restock: true,
     itemName: "egg",
   },
   {
     id: "3u1reuv4",
     amount: 242,
-    status: "success",
+    restock: false,
     itemName: "eggplant",
   },
   {
     id: "derv1ws0",
     amount: 837,
-    status: "processing",
+    restock: true,
     itemName: "tomato",
   },
   {
     id: "5kma53ae",
     amount: 874,
-    status: "success",
+    restock: false,
     itemName: "bazil",
   },
   {
     id: "bhqecj4p",
     amount: 721,
-    status: "failed",
+    restock: true,
     itemName: "carmella@example.com",
   },
   {
     id: "bhqecj4p",
     amount: 721,
-    status: "failed",
+    restock: false,
     itemName: "carmella@example.com",
   },
   {
     id: "bhqecj4p",
     amount: 721,
-    status: "failed",
+    restock: true,
     itemName: "carmella@example.com",
   },
   {
     id: "bhqecj4p",
     amount: 721,
-    status: "failed",
+    restock: false,
     itemName: "carmella@example.com",
   },
   {
     id: "bhqecj4p",
     amount: 721,
-    status: "failed",
+    restock: false,
     itemName: "carmella@example.com",
   },
   {
     id: "bhqecj4p",
     amount: 721,
-    status: "failed",
+    restock: true,
     itemName: "carmella@example.com",
   },
 ];
@@ -102,7 +102,7 @@ const data: Payment[] = [
 export type Payment = {
   id: string;
   amount: number;
-  status: "pending" | "processing" | "success" | "failed";
+  restock: boolean;
   itemName: string;
 };
 
@@ -130,14 +130,14 @@ export const columns: ColumnDef<Payment>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "restock",
+    header: "Restock",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("status")}</div>
+      <div className="capitalize">{row.getValue("restock")}</div>
     ),
   },
   {
-    accessorKey: "アイテム名",
+    accessorKey: "itemName",
     header: ({ column }) => {
       return (
         <Button

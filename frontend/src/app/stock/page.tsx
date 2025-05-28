@@ -1,11 +1,7 @@
-import { DataTableDemo } from "@/components/data-table";
+import ItemList from "@/components/item-table";
 
 const Stock = () => {
-  return (
-    <div className="border-black border-2 rounded-[5px] w-[600px] mx-auto mt-10 p-3">
-      <DataTableDemo />
-    </div>
-  );
+  return <ItemList />;
 };
 
 export default Stock;

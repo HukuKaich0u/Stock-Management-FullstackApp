@@ -34,7 +34,9 @@ const Header = () => {
               <NavigationMenuItem>
                 <NavigationMenuTrigger>商品</NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <NavigationMenuLink>商品在庫確認</NavigationMenuLink>
+                  <NavigationMenuLink href="/stock">
+                    商品在庫確認
+                  </NavigationMenuLink>
                   <NavigationMenuLink>登録商品確認</NavigationMenuLink>
                 </NavigationMenuContent>
               </NavigationMenuItem>
