@@ -18,8 +18,9 @@ func CreateItems(c *gin.Context) {
 
 	item := models.Item{
 		ItemName: inputItem.ItemName,
+		Kind:     inputItem.Kind,
 		StockNum: inputItem.StockNum,
-		Restock:  inputItem.Restock,
+		IsNeeded: inputItem.IsNeeded,
 	}
 	if err := database.DB.Create(&item).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -59,7 +60,7 @@ func UpdateItems(c *gin.Context) {
 	}
 	item = models.Item{
 		StockNum: inputItem.StockNum,
-		Restock:  inputItem.Restock,
+		IsNeeded: inputItem.IsNeeded,
 	}
 
 	if err := database.DB.Save(&item).Error; err != nil {

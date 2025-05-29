@@ -20,14 +20,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-type InputItem = {
-  ID: number;
-  itemName: string;
-  kind: string;
-  stockNum: number;
-  isNeeded: boolean;
-};
-
 const ItemRegister = () => {
   const [itemName, setItemName] = useState("");
   const [kind, setKind] = useState("");
@@ -44,12 +36,16 @@ const ItemRegister = () => {
     }
   }, [stockNumStr]);
 
-  const handlSelectValueChange = (selectedValue: string) => {
+  const handlSelectValue = (selectedValue: string) => {
     if (selectedValue == "Yes") {
       setIsNeeded(true);
     } else if (selectedValue == "No") {
       setIsNeeded(false);
     }
+  };
+
+  const handleKind = (kind: string) => {
+    setKind(kind);
   };
 
   const handleStockNumStr = (stockNumStr: string) => {
@@ -98,7 +94,7 @@ const ItemRegister = () => {
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="framework">種類</Label>
-              <Select value={kind} onValueChange={setKind}>
+              <Select value={kind} onValueChange={handleKind}>
                 <SelectTrigger id="framework">
                   <SelectValue placeholder="種類を選択してください" />
                 </SelectTrigger>
@@ -125,10 +121,7 @@ const ItemRegister = () => {
               </div>
               <div className="flex flex-col ml-3 space-y-1.5">
                 <Label>追加発注する？</Label>
-                <Select
-                  value={selectValue}
-                  onValueChange={handlSelectValueChange}
-                >
+                <Select value={selectValue} onValueChange={handlSelectValue}>
                   <SelectTrigger>
                     <SelectValue placeholder="Yes or No" />
                   </SelectTrigger>
