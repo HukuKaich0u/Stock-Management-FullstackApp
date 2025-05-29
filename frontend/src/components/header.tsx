@@ -15,7 +15,7 @@ const Header = () => {
   return (
     <header className="h-10">
       <div className="relative flex items-center justify-between m-3 font-[100x] ">
-        <div className="font-bold">
+        <div className="flex items-center font-bold">
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
@@ -31,13 +31,19 @@ const Header = () => {
                   <NavigationMenuLink>ログアウト</NavigationMenuLink>
                 </NavigationMenuContent>
               </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+          <NavigationMenu>
+            <NavigationMenuList>
               <NavigationMenuItem>
                 <NavigationMenuTrigger>商品</NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <NavigationMenuLink href="/stock">
-                    商品在庫確認
+                  <NavigationMenuLink href="/stock/register">
+                    在庫登録
                   </NavigationMenuLink>
-                  <NavigationMenuLink>登録商品確認</NavigationMenuLink>
+                  <NavigationMenuLink href="/stock/view">
+                    在庫確認
+                  </NavigationMenuLink>
                 </NavigationMenuContent>
               </NavigationMenuItem>
             </NavigationMenuList>

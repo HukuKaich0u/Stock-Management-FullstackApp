@@ -17,7 +17,7 @@ func main() {
 	router.Use(middleware.CorsMiddleware(allowOrigins))
 
 	router.POST("/items", controllers.CreateItems)
-	router.GET("/items", controllers.GetAllItems)
+	router.GET("/items/stock/view", controllers.GetAllItems)
 	router.DELETE("/items/:id", controllers.DeleteItems)
 
 	router.POST("")
