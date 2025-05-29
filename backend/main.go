@@ -13,7 +13,7 @@ func main() {
 	database.ConnectDB()
 	PORT := os.Getenv("PORT")
 	router := gin.Default()
-	allowOrigins := []string{"http://localhost:3000/user/register", "https://localhost:8080/user/register"}
+	allowOrigins := []string{"http://localhost:3000", "https://localhost:8080"}
 	router.Use(middleware.CorsMiddleware(allowOrigins))
 
 	router.POST("/items", controllers.CreateItems)
