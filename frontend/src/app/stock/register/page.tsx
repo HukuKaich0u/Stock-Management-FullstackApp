@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,15 +20,62 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+type InputItem = {
+  ID: number;
+  itemName: string;
+  kind: string;
+  stockNum: number;
+  isNeeded: boolean;
+};
+
 const ItemRegister = () => {
   const [itemName, setItemName] = useState("");
   const [kind, setKind] = useState("");
-  const [yesNo, setYesNo] = useState("");
+  const [stockNumStr, setStockNumStr] = useState("");
+  const [stockNum, setStockNum] = useState(0);
+  const [isNeeded, setIsNeeded] = useState(false);
+  const selectValue = isNeeded ? "Yes" : "No";
+
+  useEffect(() => {
+    if (!stockNumStr) {
+      setStockNum(0);
+    } else {
+      setStockNum(parseInt(stockNumStr, 10));
+    }
+  }, [stockNumStr]);
+
+  const handlSelectValueChange = (selectedValue: string) => {
+    if (selectedValue == "Yes") {
+      setIsNeeded(true);
+    } else if (selectedValue == "No") {
+      setIsNeeded(false);
+    }
+  };
+
+  const handleStockNumStr = (stockNumStr: string) => {
+    setStockNumStr(stockNumStr);
+  };
 
   const handleCancel = () => {
     setItemName("");
     setKind("");
-    setYesNo("");
+    setIsNeeded(false);
+    setStockNumStr("");
+  };
+
+  // itemName, kind, stockNum, isNeededをPOSTする
+  const handleSubmit = async () => {
+    await fetch("http://localhost:8080/stock/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        itemName: itemName,
+        stockNum: stockNum,
+        kind: kind,
+        isNeeded: isNeeded,
+      }),
+    });
+    handleCancel();
   };
 
   return (
@@ -42,7 +89,12 @@ const ItemRegister = () => {
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="itemName">アイテム名</Label>
-              <Input id="itemName" placeholder="追加するアイテムの名前" />
+              <Input
+                value={itemName}
+                onChange={(e) => setItemName(e.target.value)}
+                id="itemName"
+                placeholder="追加するアイテムの名前"
+              />
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="framework">種類</Label>
@@ -60,9 +112,23 @@ const ItemRegister = () => {
               </Select>
             </div>
             <div className="flex">
-              <div className="flex flex-col mr-3 space-y-1.5">
-                <Label>補充する？</Label>
-                <Select value={yesNo} onValueChange={setYesNo}>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="stockNum">在庫数</Label>
+                <Input
+                  type="number"
+                  id="stockNum"
+                  placeholder="0"
+                  value={stockNumStr}
+                  onChange={(e) => handleStockNumStr(e.target.value)}
+                  className="w-[100px]"
+                />
+              </div>
+              <div className="flex flex-col ml-3 space-y-1.5">
+                <Label>追加発注する？</Label>
+                <Select
+                  value={selectValue}
+                  onValueChange={handlSelectValueChange}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Yes or No" />
                   </SelectTrigger>
@@ -72,12 +138,6 @@ const ItemRegister = () => {
                   </SelectContent>
                 </Select>
               </div>
-              <div>
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="stockNum">在庫数</Label>
-                  <Input id="stockNum" placeholder="0" className="w-[100px]" />
-                </div>
-              </div>
             </div>
           </div>
         </form>
@@ -86,7 +146,7 @@ const ItemRegister = () => {
         <Button variant="outline" onClick={handleCancel}>
           キャンセル
         </Button>
-        <Button>追加</Button>
+        <Button onClick={handleSubmit}>追加</Button>
       </CardFooter>
     </Card>
   );

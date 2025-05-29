@@ -17,7 +17,7 @@ func CreateItems(c *gin.Context) {
 	}
 
 	item := models.Item{
-		Name:     inputItem.Name,
+		ItemName: inputItem.ItemName,
 		StockNum: inputItem.StockNum,
 		Restock:  inputItem.Restock,
 	}
