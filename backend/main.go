@@ -18,6 +18,7 @@ func main() {
 
 	router.POST("/stock/register", controllers.CreateItems)
 	router.GET("/stock/view", controllers.GetAllItems)
+	router.PUT("/stock/view/:id", controllers.UpdateWholeItems)
 	router.DELETE("/items/:id", controllers.DeleteItems)
 
 	router.POST("")

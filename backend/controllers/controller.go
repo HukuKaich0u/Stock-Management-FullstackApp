@@ -39,7 +39,7 @@ func GetAllItems(c *gin.Context) {
 	c.JSON(http.StatusOK, items)
 }
 
-func UpdateItems(c *gin.Context) {
+func UpdateWholeItems(c *gin.Context) {
 	idParam := c.Param("id")
 	id, err := strconv.Atoi(idParam)
 	if err != nil {
@@ -55,13 +55,13 @@ func UpdateItems(c *gin.Context) {
 
 	var inputItem models.InputItem
 	if err := c.ShouldBindJSON(&inputItem); err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	item = models.Item{
-		ItemNum:  inputItem.ItemNum,
-		IsNeeded: inputItem.IsNeeded,
-	}
+	item.ItemName = inputItem.ItemName
+	item.ItemKind = inputItem.ItemKind
+	item.ItemNum = inputItem.ItemNum
+	item.IsNeeded = inputItem.IsNeeded
 
 	if err := database.DB.Save(&item).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
