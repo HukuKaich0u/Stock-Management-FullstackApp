@@ -13,10 +13,10 @@ import Link from "next/link";
 
 const Header = () => {
   return (
-    <header className="h-10">
-      <div className="relative flex items-center justify-between m-3 font-[100x] ">
+    <header>
+      <div className="relative flex items-center justify-between h-full p-2 font-[100x] ">
         <div className="flex items-center font-bold">
-          <NavigationMenu>
+          <NavigationMenu className="mx-2">
             <NavigationMenuList>
               <NavigationMenuItem>
                 <NavigationMenuTrigger>ユーザー</NavigationMenuTrigger>
@@ -33,7 +33,7 @@ const Header = () => {
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
-          <NavigationMenu>
+          <NavigationMenu className="mx-2">
             <NavigationMenuList>
               <NavigationMenuItem>
                 <NavigationMenuTrigger>商品</NavigationMenuTrigger>

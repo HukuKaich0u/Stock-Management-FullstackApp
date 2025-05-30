@@ -18,8 +18,8 @@ func CreateItems(c *gin.Context) {
 
 	item := models.Item{
 		ItemName: inputItem.ItemName,
-		Kind:     inputItem.Kind,
-		StockNum: inputItem.StockNum,
+		ItemKind: inputItem.ItemKind,
+		ItemNum:  inputItem.ItemNum,
 		IsNeeded: inputItem.IsNeeded,
 	}
 	if err := database.DB.Create(&item).Error; err != nil {
@@ -32,7 +32,7 @@ func CreateItems(c *gin.Context) {
 
 func GetAllItems(c *gin.Context) {
 	var items []models.Item
-	if err := database.DB.Order("ID asc").Find(&items).Error; err != nil {
+	if err := database.DB.Order("item_kind").Find(&items).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -59,7 +59,7 @@ func UpdateItems(c *gin.Context) {
 		return
 	}
 	item = models.Item{
-		StockNum: inputItem.StockNum,
+		ItemNum:  inputItem.ItemNum,
 		IsNeeded: inputItem.IsNeeded,
 	}
 

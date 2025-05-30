@@ -5,33 +5,43 @@ import { useEffect, useState } from "react";
 
 type Item = {
   ID: number;
-  itemName: string;
-  kind: string;
-  stockNum: number;
-  isNeeded: boolean;
+  itemname: string;
+  itemkind: string;
+  itemnum: number;
+  isneeded: boolean;
 };
 
 import { ColumnDef } from "@tanstack/react-table";
+import { Checkbox } from "@radix-ui/react-checkbox";
 
 const columns: ColumnDef<Item>[] = [
   {
     accessorKey: "itemname",
-    header: "itemName",
+    header: () => <div className="text-center">アイテム名</div>,
+    cell: ({ row }) => (
+      <div className="text-center">{row.getValue("itemname")}</div>
+    ),
   },
   {
-    accessorKey: "kind",
-    header: "kind",
+    accessorKey: "itemkind",
+    header: () => <div className="text-center">種類</div>,
+    cell: ({ row }) => (
+      <div className="text-center">{row.getValue("itemkind")}</div>
+    ),
   },
   {
-    accessorKey: "stocknum",
-    header: "stockNum",
+    accessorKey: "itemnum",
+    header: () => <div className="text-center">在庫数</div>,
+    cell: ({ row }) => (
+      <div className="text-center">{row.getValue("itemnum")}</div>
+    ),
   },
   {
     accessorKey: "isneeded",
-    header: "isNeeded",
+    header: () => <div className="text-center">追加発注</div>,
+    cell: () => <div>unnti</div>,
   },
 ];
-
 const ItemView = () => {
   const [items, setItems] = useState<Item[]>([]);
 
@@ -46,7 +56,7 @@ const ItemView = () => {
   };
 
   return (
-    <div className="border-2 ronded-[5px] w-[500px] mx-auto mt-[50px] p-3">
+    <div className="border-2 ronded-[5px] w-[500px] mx-auto mt-[100px] p-3 text-center">
       <DataTable columns={columns} data={items} />
     </div>
   );

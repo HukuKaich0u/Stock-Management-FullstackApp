@@ -22,19 +22,19 @@ import {
 
 const ItemRegister = () => {
   const [itemName, setItemName] = useState("");
-  const [kind, setKind] = useState("");
-  const [stockNumStr, setStockNumStr] = useState("");
-  const [stockNum, setStockNum] = useState(0);
+  const [itemKind, setItemKind] = useState("");
+  const [itemNumStr, setItemNumStr] = useState("");
+  const [itemNum, setItemNum] = useState(0);
   const [isNeeded, setIsNeeded] = useState(false);
   const selectValue = isNeeded ? "Yes" : "No";
 
   useEffect(() => {
-    if (!stockNumStr) {
-      setStockNum(0);
+    if (!itemNumStr) {
+      setItemNum(0);
     } else {
-      setStockNum(parseInt(stockNumStr, 10));
+      setItemNum(parseInt(itemNumStr, 10));
     }
-  }, [stockNumStr]);
+  }, [itemNumStr]);
 
   const handlSelectValue = (selectedValue: string) => {
     if (selectedValue == "Yes") {
@@ -45,29 +45,29 @@ const ItemRegister = () => {
   };
 
   const handleKind = (kind: string) => {
-    setKind(kind);
+    setItemKind(kind);
   };
 
-  const handleStockNumStr = (stockNumStr: string) => {
-    setStockNumStr(stockNumStr);
+  const handleItemNumStr = (itemNumStr: string) => {
+    setItemNumStr(itemNumStr);
   };
 
   const handleCancel = () => {
     setItemName("");
-    setKind("");
+    setItemKind("");
     setIsNeeded(false);
-    setStockNumStr("");
+    setItemNumStr("");
   };
 
-  // itemName, kind, stockNum, isNeededをPOSTする
+  // itemName, kind, itemNum, isNeededをPOSTする
   const handleSubmit = async () => {
     await fetch("http://localhost:8080/stock/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        itemName: itemName,
-        stockNum: stockNum,
-        kind: kind,
+        itemname: itemName,
+        itemnum: itemNum,
+        itemkind: itemKind,
         isNeeded: isNeeded,
       }),
     });
@@ -75,7 +75,7 @@ const ItemRegister = () => {
   };
 
   return (
-    <Card className="w-[500px] mx-auto mt-[150px]">
+    <Card className="w-[500px] mx-auto mt-[100px]">
       <CardHeader>
         <CardTitle>アイテムを在庫に登録する</CardTitle>
         <CardDescription>Register an item in one click.</CardDescription>
@@ -83,7 +83,7 @@ const ItemRegister = () => {
       <CardContent>
         <form>
           <div className="grid w-full items-center gap-4">
-            <div className="flex flex-col space-y-1.5">
+            <div className="flex flex-col space-y-1.5 my-4">
               <Label htmlFor="itemName">アイテム名</Label>
               <Input
                 value={itemName}
@@ -92,9 +92,9 @@ const ItemRegister = () => {
                 placeholder="追加するアイテムの名前"
               />
             </div>
-            <div className="flex flex-col space-y-1.5">
+            <div className="flex flex-col space-y-1.5 my-4">
               <Label htmlFor="framework">種類</Label>
-              <Select value={kind} onValueChange={handleKind}>
+              <Select value={itemKind} onValueChange={handleKind}>
                 <SelectTrigger id="framework">
                   <SelectValue placeholder="種類を選択してください" />
                 </SelectTrigger>
@@ -107,15 +107,15 @@ const ItemRegister = () => {
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex">
+            <div className="flex my-4">
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="stockNum">在庫数</Label>
+                <Label htmlFor="itemNum">在庫数</Label>
                 <Input
                   type="number"
-                  id="stockNum"
+                  id="itemNum"
                   placeholder="0"
-                  value={stockNumStr}
-                  onChange={(e) => handleStockNumStr(e.target.value)}
+                  value={itemNumStr}
+                  onChange={(e) => handleItemNumStr(e.target.value)}
                   className="w-[100px]"
                 />
               </div>
@@ -135,7 +135,7 @@ const ItemRegister = () => {
           </div>
         </form>
       </CardContent>
-      <CardFooter className="flex justify-between">
+      <CardFooter className="flex justify-between my-4">
         <Button variant="outline" onClick={handleCancel}>
           キャンセル
         </Button>

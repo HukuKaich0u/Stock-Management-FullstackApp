@@ -5,14 +5,14 @@ import "gorm.io/gorm"
 type Item struct {
 	gorm.Model
 	ItemName string `json:"itemname"`
-	Kind     string `json:"kind"`
-	StockNum uint   `json:"stocknum"`
+	ItemKind string `json:"itemkind"`
+	ItemNum  uint   `json:"itemnum"`
 	IsNeeded bool   `json:"isneeded"`
 }
 
 type InputItem struct {
 	ItemName string `json:"itemname" binding:"required"`
-	Kind     string `json:"kind" binding:"required"`
-	StockNum uint   `json:"stocknum" binding:"required"`
+	ItemKind string `json:"itemkind" binding:"required"`
+	ItemNum  uint   `json:"itemnum" binding:"required"`
 	IsNeeded bool   `json:"isneeded" binding:"required"`
 }
