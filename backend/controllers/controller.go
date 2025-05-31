@@ -39,6 +39,38 @@ func GetAllItems(c *gin.Context) {
 	c.JSON(http.StatusOK, items)
 }
 
+func UpdateItemsIsNeeded(c *gin.Context) {
+	idParam := c.Param("id")
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var item models.Item
+	if err := database.DB.First(&item, id).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var updateInput struct {
+		IsNeeded bool `json:"isneeded"` // フロントエンドのJSONキー名と一致させる
+	}
+	if err := c.ShouldBindJSON(&updateInput); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	item.IsNeeded = updateInput.IsNeeded
+
+	if err := database.DB.Model(&item).Update("IsNeeded", updateInput.IsNeeded).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, item)
+
+}
+
 func UpdateWholeItems(c *gin.Context) {
 	idParam := c.Param("id")
 	id, err := strconv.Atoi(idParam)

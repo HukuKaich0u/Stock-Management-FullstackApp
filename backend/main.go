@@ -17,8 +17,8 @@ func main() {
 	router.Use(middleware.CorsMiddleware(allowOrigins))
 
 	router.POST("/stock/register", controllers.CreateItems)
-	router.GET("/stock/view", controllers.GetAllItems)
-	router.PUT("/stock/view/:id", controllers.UpdateWholeItems)
+	router.GET("/items", controllers.GetAllItems)
+	router.PATCH("/items/:id", controllers.UpdateItemsIsNeeded)
 	router.DELETE("/items/:id", controllers.DeleteItems)
 
 	router.POST("")

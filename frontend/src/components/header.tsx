@@ -1,12 +1,10 @@
 import {
   NavigationMenu,
   NavigationMenuContent,
-  NavigationMenuIndicator,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
 import { ModeToggle } from "./mode-toggle";
 import Link from "next/link";
@@ -36,13 +34,10 @@ const Header = () => {
           <NavigationMenu className="mx-2">
             <NavigationMenuList>
               <NavigationMenuItem>
-                <NavigationMenuTrigger>商品</NavigationMenuTrigger>
+                <NavigationMenuTrigger>アイテム</NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <NavigationMenuLink href="/stock/register">
-                    在庫登録
-                  </NavigationMenuLink>
-                  <NavigationMenuLink href="/stock/view">
-                    在庫確認
+                  <NavigationMenuLink href="/item">
+                    アイテム管理
                   </NavigationMenuLink>
                 </NavigationMenuContent>
               </NavigationMenuItem>
