@@ -100,6 +100,7 @@ const ItemRegister = () => {
                 </SelectTrigger>
                 <SelectContent position="popper">
                   <SelectItem value="野菜">野菜</SelectItem>
+                  <SelectItem value="果物">果物</SelectItem>
                   <SelectItem value="肉">肉</SelectItem>
                   <SelectItem value="魚">魚</SelectItem>
                   <SelectItem value="調味料">調味料</SelectItem>
