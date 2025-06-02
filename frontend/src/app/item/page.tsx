@@ -1,9 +1,8 @@
-import ItemRegister from "@/components/item-register";
-import ItemView from "@/components/item-view";
+import { ItemRegister, ItemView } from "@/components/about-item";
 
-const ItemPage = () => {
+const itemPage = () => {
   return (
-    <div className="flex items-start justify-center mt-[50px]">
+    <div className="flex items-start justify-center mt-[75px]">
       <div className="mx-5">
         <ItemRegister />
       </div>
@@ -14,4 +13,4 @@ const ItemPage = () => {
   );
 };
 
-export default ItemPage;
+export default itemPage;
