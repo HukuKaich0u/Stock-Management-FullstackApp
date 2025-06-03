@@ -1,16 +1,11 @@
-import { ItemRegister, ItemView } from "@/components/about-item";
+import ItemPage from "@/components/items";
 
-const itemPage = () => {
+const Items = () => {
   return (
     <div className="flex items-start justify-center mt-[75px]">
-      <div className="mx-5">
-        <ItemRegister />
-      </div>
-      <div className="mx-5">
-        <ItemView />
-      </div>
+      <ItemPage />
     </div>
   );
 };
 
-export default itemPage;
+export default Items;
