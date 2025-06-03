@@ -137,12 +137,76 @@ const ItemPage = () => {
 
   const selectValue: string = isNeeded ? "Yes" : "No";
 
+  const fetchItems = useCallback(async () => {
+    try {
+      setLoading(true); // ロード開始
+      setError(null); // 前回のエラーをリセット
+
+      const res = await fetch("http://localhost:8080/items");
+
+      // APIからの応答が成功したかを確認 (HTTPステータスコード 2xx 以外はエラー)
+      if (!res.ok) {
+        // エラーレスポンスのボディをパースして詳細なエラーメッセージを取得
+        const errorData = await res.json();
+        throw new Error(
+          `Failed to fetch items: ${errorData.message || res.statusText}`
+        );
+      }
+
+      const data = await res.json(); // JSONデータをパース
+      setItems(data); // ステートを更新
+    } catch (err) {
+      // データ取得中にエラーが発生した場合
+      if (err instanceof Error) {
+        setError(err.message); // エラーメッセージをステートに保存
+      } else {
+        setError("不明なエラーが発生しました。"); // 型不明のエラーの場合
+      }
+      console.error("データの取得に失敗しました:", err); // コンソールにエラーログ
+    } finally {
+      setLoading(false); // ロード終了
+    }
+  }, [setItems]);
+
+  useEffect(() => {
+    fetchItems();
+  }, [fetchItems]);
+
   // input type="number"で受け取った値を数字に変換する処理
   // itemNumStrに変更があればこのuseEffect関数を実行する
   useEffect(() => {
     // itemNumStr が空文字列の場合に 0 に設定するように修正
     setItemNum(itemNumStr ? parseInt(itemNumStr, 10) : 0);
   }, [itemNumStr]);
+
+  const memoizedColumns = useMemo(
+    () => getColumns(setItems, fetchItems),
+    [setItems, fetchItems]
+  );
+
+  // ローディング状態の場合の表示
+  if (loading) {
+    return (
+      <div className="text-center mt-8">
+        <p>アイテムをロード中...</p>
+      </div>
+    );
+  }
+
+  // エラー状態の場合の表示
+  if (error) {
+    return (
+      <div className="text-center mt-8 text-red-500">
+        <p>データの取得に失敗しました: {error}</p>
+        <button
+          onClick={fetchItems}
+          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          再試行
+        </button>
+      </div>
+    );
+  }
 
   const handleCancel = () => {
     setItemName("");
@@ -175,87 +239,24 @@ const ItemPage = () => {
         isneeded: isNeeded,
       }),
     });
-    handleCancel();
     fetchItems();
+    handleCancel();
   };
 
   /**
    * APIからアイテムデータを取得する非同期関数
    */
-  const fetchItems = useCallback(async () => {
-    try {
-      setLoading(true); // ロード開始
-      setError(null); // 前回のエラーをリセット
-
-      const res = await fetch("http://localhost:8080/items");
-
-      // APIからの応答が成功したかを確認 (HTTPステータスコード 2xx 以外はエラー)
-      if (!res.ok) {
-        // エラーレスポンスのボディをパースして詳細なエラーメッセージを取得
-        const errorData = await res.json();
-        throw new Error(
-          `Failed to fetch items: ${errorData.message || res.statusText}`
-        );
-      }
-
-      const data = await res.json(); // JSONデータをパース
-      setItems(data); // ステートを更新
-    } catch (err) {
-      // データ取得中にエラーが発生した場合
-      if (err instanceof Error) {
-        setError(err.message); // エラーメッセージをステートに保存
-      } else {
-        setError("不明なエラーが発生しました。"); // 型不明のエラーの場合
-      }
-      console.error("データの取得に失敗しました:", err); // コンソールにエラーログ
-    } finally {
-      setLoading(false); // ロード終了
-    }
-  }, [setItems]);
-
-  // ローディング状態の場合の表示
-  if (loading) {
-    return (
-      <div className="text-center mt-8">
-        <p>アイテムをロード中...</p>
-      </div>
-    );
-  }
-
-  // エラー状態の場合の表示
-  if (error) {
-    return (
-      <div className="text-center mt-8 text-red-500">
-        <p>データの取得に失敗しました: {error}</p>
-        <button
-          onClick={fetchItems}
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          再試行
-        </button>
-      </div>
-    );
-  }
-
-  const memoizedColumns = useMemo(
-    () => getColumns(setItems, fetchItems),
-    [setItems, fetchItems]
-  );
-
-  useEffect(() => {
-    fetchItems();
-  }, [fetchItems]);
 
   return (
     <div className="flex items-start justify-around mt-[50px]">
       <div className="mx-[50px] w-[500px]">
-        <Card>
-          <CardHeader>
-            <CardTitle>アイテムを在庫に登録する</CardTitle>
-            <CardDescription>Register an item in one click.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form>
+        <form>
+          <Card>
+            <CardHeader>
+              <CardTitle>アイテムを在庫に登録する</CardTitle>
+              <CardDescription>Register an item in one click.</CardDescription>
+            </CardHeader>
+            <CardContent>
               <div className="grid w-full items-center gap-4">
                 <div className="flex flex-col space-y-1.5 my-4">
                   <Label htmlFor="itemName">アイテム名</Label>
@@ -311,15 +312,15 @@ const ItemPage = () => {
                   </div>
                 </div>
               </div>
-            </form>
-          </CardContent>
-          <CardFooter className="flex justify-between my-4">
-            <Button variant="outline" onClick={handleCancel}>
-              キャンセル
-            </Button>
-            <Button onClick={handleSubmit}>追加</Button>
-          </CardFooter>
-        </Card>
+            </CardContent>
+            <CardFooter className="flex justify-between my-4">
+              <Button type="button" variant="outline" onClick={handleCancel}>
+                キャンセル
+              </Button>
+              <Button onClick={handleSubmit}>追加</Button>
+            </CardFooter>
+          </Card>
+        </form>
       </div>
       <div className="mx-[50px] w-[500px]">
         <DataTable columns={memoizedColumns} data={items} />

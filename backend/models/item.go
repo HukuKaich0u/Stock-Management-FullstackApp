@@ -14,5 +14,5 @@ type InputItem struct {
 	ItemName string `json:"itemname" binding:"required"`
 	ItemKind string `json:"itemkind" binding:"required"`
 	ItemNum  uint   `json:"itemnum" binding:"required"`
-	IsNeeded bool   `json:"isneeded" binding:"required"`
+	IsNeeded bool   `json:"isneeded"`
 }
