@@ -37,9 +37,21 @@ type Item = {
  * @returns ColumnDef<Item>[] カラム定義の配列
  */
 const getColumns = (
-  setItems: React.Dispatch<React.SetStateAction<Item[]>>,
+  handleDelete: (id: number) => Promise<void>,
   fetchItems: () => Promise<void>
 ): ColumnDef<Item>[] => [
+  {
+    accessorKey: "ID",
+    header: () => <div className="text-center">削除</div>,
+    cell: ({ row }) => {
+      const id: number = row.getValue("ID");
+      return (
+        <div className="text-center">
+          <Button onClick={() => handleDelete(id)}>x</Button>
+        </div>
+      );
+    },
+  },
   {
     accessorKey: "itemname",
     header: () => <div className="text-center">アイテム名</div>,
@@ -179,9 +191,19 @@ const ItemPage = () => {
     setItemNum(itemNumStr ? parseInt(itemNumStr, 10) : 0);
   }, [itemNumStr]);
 
+  const handleDelete = useCallback(
+    async (id: number) => {
+      await fetch(`http://localhost:8080/items/${id}`, {
+        method: "DELETE",
+      });
+      fetchItems();
+    },
+    [fetchItems]
+  );
+
   const memoizedColumns = useMemo(
-    () => getColumns(setItems, fetchItems),
-    [setItems, fetchItems]
+    () => getColumns(handleDelete, fetchItems),
+    [handleDelete, fetchItems]
   );
 
   // ローディング状態の場合の表示
