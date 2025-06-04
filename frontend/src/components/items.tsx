@@ -47,7 +47,12 @@ const getColumns = (
       const id: number = row.getValue("ID");
       return (
         <div className="text-center">
-          <Button onClick={() => handleDelete(id)}>x</Button>
+          <Button
+            onClick={() => handleDelete(id)}
+            className="bg-gray-100 text-black"
+          >
+            x
+          </Button>
         </div>
       );
     },
